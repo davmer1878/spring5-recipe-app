@@ -3,6 +3,7 @@
     <include resource="org/springframework/boot/logging/logback/base.xml"/>
 
     <logger name = "guru.springframework.spring5recipeapp" level="DEBUG"/>
+    <logger name = "org.springframework.jdbc" level="DEBUG"/>
     <logger name = "org.springframework" level="INFO"/>
 
 </configuration>
