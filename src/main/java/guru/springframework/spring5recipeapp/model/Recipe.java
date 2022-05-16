@@ -1,6 +1,7 @@
 package guru.springframework.spring5recipeapp.model;
 
 import guru.springframework.spring5recipeapp.enums.Difficulty;
+import guru.springframework.spring5recipeapp.service.RecipeService;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -19,6 +20,8 @@ public class Recipe
     private Integer servings;
     private String source;
     private String url;
+
+    @Lob
     private String directions;
 
     @Enumerated(value = EnumType.STRING)
@@ -31,7 +34,7 @@ public class Recipe
     private Notes notes;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "recipe")
-    private Set<Ingredient> ingredients;
+    private Set<Ingredient> ingredients = new HashSet<>();
 
     @ManyToMany
     @JoinTable(name = "recipe_category",
@@ -147,6 +150,14 @@ public class Recipe
     public void setNotes(Notes notes)
     {
         this.notes = notes;
+        notes.setRecipe(this);
+    }
+
+    public Recipe addIngredient(Ingredient ingredient)
+    {
+        ingredient.setRecipe(this);
+        this.ingredients.add(ingredient);
+        return this;
     }
 
     public Set<Ingredient> getIngredients()

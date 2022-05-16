@@ -2,37 +2,25 @@ package guru.springframework.spring5recipeapp.controller;
 
 import guru.springframework.spring5recipeapp.repository.CategoryRepository;
 import guru.springframework.spring5recipeapp.repository.UnitOfMeasureRepository;
+import guru.springframework.spring5recipeapp.service.RecipeService;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 public class IndexController
 {
-    private final CategoryRepository categoryRepository;
-    private final UnitOfMeasureRepository unitOfMeasureRepository;
+    private final RecipeService recipeService;
 
-    public IndexController(CategoryRepository categoryRepository, UnitOfMeasureRepository unitOfMeasureRepository)
+    public IndexController(RecipeService recipeService)
     {
-        this.categoryRepository = categoryRepository;
-        this.unitOfMeasureRepository = unitOfMeasureRepository;
+        this.recipeService = recipeService;
     }
 
     @RequestMapping({"", "/", "index", "index.html"})
-    public String showIndex()
+    public String showIndex(Model model)
     {
-        categoryRepository.findByDescription("Mexican").ifPresentOrElse(
-                category -> System.out.println("Category Id: " + category.getId()),
-                () -> System.out.println("Category does not exist"));
-        categoryRepository.findByDescription("Invalid").ifPresentOrElse(
-                category -> System.out.println("Category Id: " + category.getId()),
-                () -> System.out.println("Category does not exist"));
-        unitOfMeasureRepository.findByDescription("Pinch").ifPresentOrElse(
-                unitOfMeasure -> System.out.println("Unit Of Measure Id: " + unitOfMeasure.getId()),
-                () -> System.out.println("Unit of Measure does not exist"));
-        unitOfMeasureRepository.findByDescription("Punch").ifPresentOrElse(
-                unitOfMeasure -> System.out.println("Unit Of Measure Id: " + unitOfMeasure.getId()),
-                () -> System.out.println("Unit of Measure does not exist"));
-
+        model.addAttribute("recipes", recipeService.getRecipes());
         return "index";
     }
 }
