@@ -1,7 +1,5 @@
 package guru.springframework.spring5recipeapp.controller;
 
-import guru.springframework.spring5recipeapp.repository.CategoryRepository;
-import guru.springframework.spring5recipeapp.repository.UnitOfMeasureRepository;
 import guru.springframework.spring5recipeapp.service.RecipeService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

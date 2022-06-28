@@ -1,45 +1,28 @@
-package guru.springframework.spring5recipeapp.model;
+package guru.springframework.spring5recipeapp.command;
 
 import guru.springframework.spring5recipeapp.enums.Difficulty;
 
-import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
-@Entity
-public class Recipe
+public class RecipeCommand
 {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     private String description;
     private Integer prepTime;
     private Integer cookTime;
     private Integer servings;
     private String source;
     private String url;
-
-    @Lob
     private String directions;
-
-    @Enumerated(value = EnumType.STRING)
+    private Set<IngredientCommand> ingredients = new HashSet<>();
     private Difficulty difficulty;
+    private NotesCommand notes;
+    private Set<CategoryCommand> categories = new HashSet<>();
 
-    @Lob
-    private Byte[] image;
-
-    @OneToOne(cascade = CascadeType.ALL)
-    private Notes notes;
-
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "recipe")
-    private Set<Ingredient> ingredients = new HashSet<>();
-
-    @ManyToMany
-    @JoinTable(name = "recipe_category",
-        joinColumns = @JoinColumn(name = "recipe_id"),
-        inverseJoinColumns = @JoinColumn(name = "category_id"))
-    private Set<Category> categories = new HashSet<>();
+    public RecipeCommand()
+    {
+    }
 
     public Long getId()
     {
@@ -121,6 +104,16 @@ public class Recipe
         this.directions = directions;
     }
 
+    public Set<IngredientCommand> getIngredients()
+    {
+        return ingredients;
+    }
+
+    public void setIngredients(Set<IngredientCommand> ingredients)
+    {
+        this.ingredients = ingredients;
+    }
+
     public Difficulty getDifficulty()
     {
         return difficulty;
@@ -131,53 +124,22 @@ public class Recipe
         this.difficulty = difficulty;
     }
 
-    public Byte[] getImage()
-    {
-        return image;
-    }
-
-    public void setImage(Byte[] image)
-    {
-        this.image = image;
-    }
-
-    public Notes getNotes()
+    public NotesCommand getNotes()
     {
         return notes;
     }
 
-    public void setNotes(Notes notes)
+    public void setNotes(NotesCommand notes)
     {
-        if (notes != null)
-        {
-            this.notes = notes;
-            notes.setRecipe(this);
-        }
+        this.notes = notes;
     }
 
-    public Recipe addIngredient(Ingredient ingredient)
-    {
-        ingredient.setRecipe(this);
-        this.ingredients.add(ingredient);
-        return this;
-    }
-
-    public Set<Ingredient> getIngredients()
-    {
-        return ingredients;
-    }
-
-    public void setIngredients(Set<Ingredient> ingredients)
-    {
-        this.ingredients = ingredients;
-    }
-
-    public Set<Category> getCategories()
+    public Set<CategoryCommand> getCategories()
     {
         return categories;
     }
 
-    public void setCategories(Set<Category> categories)
+    public void setCategories(Set<CategoryCommand> categories)
     {
         this.categories = categories;
     }
